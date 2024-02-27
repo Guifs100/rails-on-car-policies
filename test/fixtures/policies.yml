@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date_issue: 2024-02-27 14:16:28
+  policy_expiration: 2024-02-27 14:16:28
+  insured: one
+  vehicle: one
+
+two:
+  date_issue: 2024-02-27 14:16:28
+  policy_expiration: 2024-02-27 14:16:28
+  insured: two
+  vehicle: two
