@@ -6,9 +6,11 @@ services:
       - .:/rails-on-car-policies/
     ports:
       - "3000:3000"
+    networks:
+      - policy-service
     depends_on:
       - db
-
+      - sneakers
 
   db:
     image: postgres
@@ -19,3 +21,23 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
+    networks:
+      - policy-service
+
+
+  sneakers:
+    build:
+      context: .
+    command: bash -c 'bundle exec rake sneakers:run'
+    volumes:
+      - .:/rails-on-car-policies/
+    environment:
+      # - RABBITMQ_USERNAME=user
+      # - RABBITMQ_PASSWORD=password
+      - RABBITMQ_HOSTNAME=rabbitmq
+    networks:
+      - policy-service
+
+networks:
+  policy-service:
+    name: policy-service
