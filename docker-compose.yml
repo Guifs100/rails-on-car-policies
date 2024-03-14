@@ -4,6 +4,8 @@ services:
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     image: car_policies_web
     container_name: car_policies_web
+    tty: true
+    stdin_open: true
     volumes:
       - .:/rails-on-car-policies/
     ports:
