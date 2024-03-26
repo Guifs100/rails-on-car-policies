@@ -7,17 +7,17 @@ class CreatePolicyWorker
     policy = parser_message(msg)
 
     ActiveRecord::Base.transaction do
-      Vehicle.create(
+      Vehicle.create!(
         license_plate: policy[:vehicle][:license_plate],
         brand: policy[:vehicle][:brand],
         model: policy[:vehicle][:model],
         year: policy[:vehicle][:year]
       )
-      Insured.create(
+      Insured.create!(
         name: policy[:insured][:name],
         cpf: policy[:insured][:cpf]
       )
-      Policy.create(
+      Policy.create!(
         date_issue: policy[:date_issue].to_datetime,
         policy_expiration: policy[:policy_expiration].to_datetime,
         insured: Insured.last,
@@ -30,7 +30,6 @@ class CreatePolicyWorker
   rescue ActiveRecord::RecordInvalid => error
     puts "Error to create Policy, Vehicle or Insured: #{error.message}"
 
-    nack!
   end
 
   private
