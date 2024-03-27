@@ -28,8 +28,4 @@ class PoliciesSerializer < BaseSerializer
       }
     end
   end
-
-  def format_date(date)
-    date&.strftime('%d/%m/%y %H:%M:%S') if date
-  end
 end
