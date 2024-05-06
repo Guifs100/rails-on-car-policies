@@ -1,3 +1,5 @@
+require 'bunny'
+
 class CreatePolicyWorker
   include Sneakers::Worker
 
@@ -7,21 +9,21 @@ class CreatePolicyWorker
     policy = parser_message(msg)
 
     ActiveRecord::Base.transaction do
-      Vehicle.create!(
+      vehicle = Vehicle.create!(
         license_plate: policy[:vehicle][:license_plate],
         brand: policy[:vehicle][:brand],
         model: policy[:vehicle][:model],
-        year: policy[:vehicle][:year]
+        year: policy[:vehicle][:year],
       )
-      Insured.create!(
+      insured = Insured.create!(
         name: policy[:insured][:name],
         cpf: policy[:insured][:cpf]
       )
       Policy.create!(
         date_issue: policy[:date_issue].to_datetime,
         policy_expiration: policy[:policy_expiration].to_datetime,
-        insured: Insured.last,
-        vehicle: Vehicle.last
+        insured: insured,
+        vehicle: vehicle
       )
     end
 
@@ -30,6 +32,7 @@ class CreatePolicyWorker
   rescue ActiveRecord::RecordInvalid => error
     puts "Error to create Policy, Vehicle or Insured: #{error.message}"
 
+    # nack!
   end
 
   private
