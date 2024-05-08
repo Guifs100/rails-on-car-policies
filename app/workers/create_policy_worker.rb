@@ -7,21 +7,26 @@ class CreatePolicyWorker
     policy = parser_message(msg)
 
     ActiveRecord::Base.transaction do
-      Vehicle.create!(
+      vehicle = Vehicle.create!(
         license_plate: policy[:vehicle][:license_plate],
         brand: policy[:vehicle][:brand],
         model: policy[:vehicle][:model],
         year: policy[:vehicle][:year]
       )
-      Insured.create!(
+      insured = Insured.create!(
         name: policy[:insured][:name],
         cpf: policy[:insured][:cpf]
+      )
+      charge = Charge.create!(
+        payment_id: policy[:charge][:payment_id],
+        payment_link: policy[:charge][:payment_link],
       )
       Policy.create!(
         date_issue: policy[:date_issue].to_datetime,
         policy_expiration: policy[:policy_expiration].to_datetime,
-        insured: Insured.last,
-        vehicle: Vehicle.last
+        insured: insured,
+        vehicle: vehicle,
+        charge: charge,
       )
     end
 
