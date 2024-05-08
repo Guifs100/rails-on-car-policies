@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_06_190944) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_07_142805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "charges", force: :cascade do |t|
+    t.string "payment_id"
+    t.string "payment_link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "insureds", force: :cascade do |t|
     t.string "name"
@@ -29,6 +36,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_06_190944) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status"
+    t.bigint "charge_id"
+    t.index ["charge_id"], name: "index_policies_on_charge_id"
     t.index ["insured_id"], name: "index_policies_on_insured_id"
     t.index ["vehicle_id"], name: "index_policies_on_vehicle_id"
   end
@@ -42,6 +51,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_06_190944) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "policies", "charges"
   add_foreign_key "policies", "insureds"
   add_foreign_key "policies", "vehicles"
 end
