@@ -1,7 +1,7 @@
 # Define o comando padrão a ser executado quando o Make é chamado sem argumentos.
 .DEFAULT_GOAL := help
 
-bash:
+run:
 	docker compose run --rm -it web bash
 
 build:
@@ -18,7 +18,7 @@ down:
 
 help:
 	@echo "Uso:"
-	@echo "  make bash                  Inicia um novo container com o bash"
+	@echo "  make run                  Inicia um novo container com o bash"
 	@echo "  make build                 Monta a imagem configurado no projeto"
 	@echo "  make down                  derruba todos os container e os orfãos"
 	@echo "  make exec                  Inica o bash de um container já levantado"
