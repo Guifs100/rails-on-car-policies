@@ -1,3 +1,5 @@
+require 'bunny'
+
 class CreatePolicyWorker
   include Sneakers::Worker
 
@@ -11,7 +13,7 @@ class CreatePolicyWorker
         license_plate: policy[:vehicle][:license_plate],
         brand: policy[:vehicle][:brand],
         model: policy[:vehicle][:model],
-        year: policy[:vehicle][:year]
+        year: policy[:vehicle][:year],
       )
       insured = Insured.create!(
         name: policy[:insured][:name],
@@ -26,7 +28,7 @@ class CreatePolicyWorker
         policy_expiration: policy[:policy_expiration].to_datetime,
         insured: insured,
         vehicle: vehicle,
-        charge: charge,
+        charge: charge
       )
     end
 
@@ -35,6 +37,7 @@ class CreatePolicyWorker
   rescue ActiveRecord::RecordInvalid => error
     puts "Error to create Policy, Vehicle or Insured: #{error.message}"
 
+    # nack!
   end
 
   private

@@ -11,5 +11,3 @@
 # i = Insured.new(name: 'Ligi Carneiro', cpf: '23238052071')
 # c = Charge.new(payment_id: '1', payment_link: 'http://teste.com.br')
 # p = Policy.new(date_issue: Date.today - 1.year, policy_expiration: Date.today + 1.year, insured: i, vehicle: v, charge: c)
-
-
