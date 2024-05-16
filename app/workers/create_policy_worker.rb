@@ -19,11 +19,16 @@ class CreatePolicyWorker
         name: policy[:insured][:name],
         cpf: policy[:insured][:cpf]
       )
+      charge = Charge.create!(
+        payment_id: policy[:charge][:payment_id],
+        payment_link: policy[:charge][:payment_link],
+      )
       Policy.create!(
         date_issue: policy[:date_issue].to_datetime,
         policy_expiration: policy[:policy_expiration].to_datetime,
         insured: insured,
-        vehicle: vehicle
+        vehicle: vehicle,
+        charge: charge
       )
     end
 
